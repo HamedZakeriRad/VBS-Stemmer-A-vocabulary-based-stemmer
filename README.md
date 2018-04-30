@@ -1,2 +1,22 @@
 # VBS-Stemmer-A-vocabulary-based-stemmer
 VBS Stemmer: A vocabulary-based stemmer
+
+
+# Installation
+This Stemmer is written in PHP. The Vocabulary is based on WordNet 3.
+
+VBS Stemmer needs access to MySQL to extract the Words from the vocabulary.  
+
+
+# VBS-Stemmer
+Stemming is referred to a procedure of reducing all words appearing in different morphological variants to a common form. The Vocabulary Based Stemmer (VBS) is the alternative solution to the stemming problem for the applications which are based on the semantic relation between words or dictionary based, and need valid words (VBS stemmer never creates an unrecognized word, simply because of using the WordNet based vocabulary to identify the words).
+
+VBS Stemmer is based on Affix removal method, the method of Affix removal in VBS Stemmer is based on two principles; one is iterations and the other is longest suffix match. It removes suffix of the word in each loop step by step. Iteration is about removing all possible suffixes if a word has got more than one suffix. The longest suffix match principle says that within any given class of endings, the one which has got the longest ending should be removed first if more than one end provides a match.
+The stemming algorithm built from two separate stemming processes:
+
+1)	The first process is based on the irregular verbs, exceptions and special words.
+2)	The second part of the stemming process is to stem the words in each suffix category, the words which are not part of the irregular verbs, exceptional words and special words list. These words can be correctly stemmed according to the stemming rules implemented in the stemming algorithm
+ 
+# To learn more about VBS-Stemmer please refer to the published paper:
+
+https://www.sciencepubco.com/index.php/ijet/article/view/9192
