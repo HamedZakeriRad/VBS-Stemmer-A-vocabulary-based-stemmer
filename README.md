@@ -3,9 +3,10 @@ VBS Stemmer: A vocabulary-based stemmer
 
 
 # Installation
-This Stemmer is written in PHP. The Vocabulary is based on WordNet 3.
+This Stemmer is written in PHP. The Vocabulary is based on WordNet 3. VBS Stemmer needs access to MySQL to extract the Words from the vocabulary.
 
-VBS Stemmer needs access to MySQL to extract the Words from the vocabulary.  
+1) Create a Database in MySQL and Restore the Vocabulary.sql file (in the MySQL File Folder) into the Database.
+2) Edit Config.php file located in the classes folder and change the MySQL access details based on your Database.
 
 
 # VBS-Stemmer
