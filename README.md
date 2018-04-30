@@ -21,3 +21,6 @@ The stemming algorithm built from two separate stemming processes:
 # To learn more about VBS-Stemmer please refer to the published paper:
 
 https://www.sciencepubco.com/index.php/ijet/article/view/9192
+
+# How to Cite:
+Please reffer to the published paper for Citation.
