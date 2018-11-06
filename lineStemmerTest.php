@@ -1,11 +1,7 @@
 <?php
-
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
 ob_start();
 //-----------------------------------------------------------------------------
-require_once 'classes/mySQLConnect.php';
-$MySQL = new mySQLConnect();
-$MySQL->connect();
-
 require_once 'classes/VbsStemmer.php';
 $VbsStemmer = new VbsStemmer();
 //-----------------------------------------------------------------------------
@@ -17,7 +13,7 @@ $ExplodeArray = explode(' ', trim($OriginalTextToBeStemmed));
 $ExplodeArrayCount = count($ExplodeArray);
 
 for ($i = 0; $i <= $ExplodeArrayCount; $i++) {
-    if (!preg_match('/[_]{1,5}/', $ExplodeArray[$i]) && strlen($ExplodeArray[$i]) > 2) {
+    if (!preg_match('/[_]{1,5}/', $ExplodeArray[$i]) && (strlen($ExplodeArray[$i]) > 2)) {
         for ($DCheck = 0; $DCheck < 2; $DCheck++) { //Double Check the Stemmed text
             $VbsStemmer->Word = $ExplodeArray[$i];
             $NewStemmedWord = $VbsStemmer->Stem();
@@ -42,7 +38,5 @@ echo str_pad(' ', 2048);
 flush();
 ob_flush();
 //-----------------------------------------------------------------------------
-//Close MySQL Connection
-$MySQL->close();
 ob_end_flush();
 ?>

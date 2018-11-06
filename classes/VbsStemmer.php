@@ -6,44 +6,47 @@
  * @author Hamed Zakeri Rad
  */
 
-//require_once 'mySQLConnect.php'; //Active this line if you need to Connect to MySQL directly from the class
-
+require_once 'mySQLConnect.php';
 require_once 'IrregularVerbs.php';
 require_once 'SpecialWords.php';
 require_once 'ExceptionalWords.php';
 require_once 'PreFixStem.php';
 
 class VbsStemmer {
-
+    //-------------------
     public $Word; //Word that should be Stemmed
+    //-------------------
     private $OriginalWord;
     private $Exit;
-    private $RunPreFix = "No"; // Set To "Yes" if you need to Stem PreFixes also. (under development)
+    private $RunPreFix = FALSE; // Set To TRUE if you need to Stem PreFixes also. (under development)
     private $IrregularVerbs;
     private $SpecialWords;
     private $ExceptionalWords;
     private $PreFixStem;
-    //private $mySQLConnect;  //Active this line if you need to Connect to MySQL directly from the class
-    
+    private $mySQLConnect;
+    //-------------------
     function __construct() {
-        //$this->mySQLConnect = new mySQLConnect(); //Active this line if you need to Connect to MySQL directly from the class
-        //$this->mySQLConnect->connect(); //Active this line if you need to Connect to MySQL directly from the class
+        $this->mySQLConnect = new mySQLConnect(); 
+        
 
         $this->IrregularVerbs = new IrregularVerbs();
         $this->SpecialWords = new SpecialWords();
         $this->ExceptionalWords = new ExceptionalWords();
         $this->PreFixStem = new PreFixStem();
+        $this->PreFixStem->mySQLConnect = $this->mySQLConnect;
     }
 
     public function Stem() {
+        $this->mySQLConnect->PDOConnect(); 
         $this->OriginalWord = $this->Word;
         $this->StemCheck();
-
+        
+        $this->mySQLConnect->PDOConnectionClose();
         return $this->Word;
     }
 
     private function StemCheck() {
-        if ($this->RunPreFix == "Yes") {
+        if ($this->RunPreFix) {
             $this->Word = $this->PreFixStem->PreFixCheck($this->Word);
         }
         $this->Word = $this->IrregularVerbs->IrregularVerbsCheck($this->Word);
@@ -1600,20 +1603,14 @@ class VbsStemmer {
 
     //---------------------Database Control-------------------------------------
     private function CheckDictionary() {
-        $Result = $this->MySQlQuery("SELECT word FROM vocabulary_baked WHERE word = '$this->Word' ;");
+        $Result = $this->mySQLConnect->Select("SELECT word FROM vocabulary WHERE word = '$this->Word' ;");
+        
         if ((!$Result && (substr($this->Word, -1) == 's')) && strlen($this->Word) < 3) {
             $this->Word = substr($this->Word, 0, -1);
-            $Result = $this->MySQlQuery("SELECT word FROM vocabulary_baked WHERE word = '$this->Word' ;");
+            $Result = $this->mySQLConnect->Select("SELECT word FROM vocabulary WHERE word = '$this->Word' ;");
         }
         return $Result;
     }
-
-    private function MySQlQuery($sql) {
-
-        $pResult = mysql_query($sql);
-        return mysql_fetch_object($pResult);
-    }
-
     //--------------------------------------------------------------------------
     private function CheckDubleLetter() {
         $DubleLetter = FALSE;

@@ -1,11 +1,7 @@
 <?php
-
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
 ob_start();
 //-----------------------------------------------------------------------------
-require_once '../classes/mySQLConnect.php';
-$MySQL = new mySQLConnect();
-$MySQL->connect();
-
 require_once '../classes/VbsStemmer.php';
 $VbsStemmer = new VbsStemmer();
 
@@ -64,6 +60,4 @@ for ($i = 0; $i < $DataSetArrayCount; $i++) {
     $fileReaderAndWriter->WriteToFile();
 }
 //-----------------------------------------------------------------------------
-//Close MySQL Connection
-$MySQL->close();
 ob_end_flush();
