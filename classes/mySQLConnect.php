@@ -18,7 +18,7 @@ class mySQLConnect {
     private $username;
     private $password;
     private $database;
-
+    
     /**
      * PDO Connection Tunnel to MySQL
      * @example Connection->exec(SQL_Query) Use Connection to Execute SQL Query (Doesn't Return Value)
@@ -38,10 +38,22 @@ class mySQLConnect {
      * Connect To MySQL using PDO
      * @return void 
      */
-    public function PDOConnect() {
+    public function PDOConnect($DBType, $DBName) {
         try {
-            //$this->Connection = new PDO("mysql:host=$this->hostname;", $this->username, $this->password); // connect to MySQL No Specific Database
-            $this->Connection = new PDO("mysql:host=$this->hostname;dbname=$this->database", $this->username, $this->password); // connect to Specific Database in MySQL
+            if($DBType == "MySQL"){
+                $this->Connection = new PDO("mysql:host=$this->hostname;dbname=$this->database", $this->username, $this->password);
+            }else{
+                if(extension_loaded('sqlite3')){
+                    if(!file_exists($DBName)){
+                        $this->SQLiteCreate($DBName); 
+                    }
+                    $this->Connection = new PDO("sqlite:$DBName");
+                }else{
+                    die("SQLite is not loaded in php.ini <br/> Please Add(UnComment) the following lines in the php.ini file:<br/>extension=sqlite3 <br/>extension=pdo_sqlite");
+                }
+                
+            }
+            
 
             $this->Connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // set the PDO error mode to exception
             //echo "Connected successfully";
@@ -98,6 +110,24 @@ class mySQLConnect {
      */
     public function getTodayDate() {
         return date('Y-m-d');
+    }
+
+    /**
+     * Create SQLite Database file with Table and data
+     * @return void 
+     */
+    public function SQLiteCreate($DBName) {
+ 
+        $exec_enabled = function_exists('exec') && !in_array('exec', array_map('trim', explode(', ', ini_get('disable_functions')))) && strtolower(ini_get('safe_mode')) != 1;
+        if($exec_enabled) { 
+            $SQLite = new SQLite3($DBName); 
+            $SQLite->exec('CREATE TABLE vocabulary (wordid INTEGER NOT NULL, word varchar(80) NOT NULL, pos varchar(15) NOT NULL, definition text NOT NULL)');
+            $SQLite->exec(file_get_contents('classes/Vocabulary.data'));
+            $SQLite->exec('CREATE INDEX word ON vocabulary (word);'); 
+        }else{
+            die("Please Enable exec function in your php.ini, Make sure exec is not listed under disable_functions in the php.ini file.");
+        }
+        
     }
 
 }

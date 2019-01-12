@@ -1,13 +1,24 @@
 # VBS-Stemmer-A-vocabulary-based-stemmer
 VBS Stemmer: A vocabulary-based stemmer
 
+# Requirement
+PHP > 7.0
+SQLite3 extention
+exec function
 
 # Installation
 This Stemmer is written in PHP. The Vocabulary is based on WordNet 3. VBS Stemmer needs access to MySQL to extract the Words from the vocabulary.
 
+SQLite:
+It is active by default, you don't need to do anything.
+
+MySQL: 
 1) Create a Database in MySQL and Restore the Vocabulary.sql file (in the MySQL File Folder) into the Database.
 2) Edit Config.php file located in the classes folder and change the MySQL access details based on your Database.
+3) Initialize $VbsStemmer->$DbType = "MySQL"; 
 
+
+Edit 
 
 # VBS-Stemmer
 Stemming is referred to a procedure of reducing all words appearing in different morphological variants to a common form. The Vocabulary Based Stemmer (VBS) is the alternative solution to the stemming problem for the applications which are based on the semantic relation between words or dictionary based, and need valid words (VBS stemmer never creates an unrecognized word, simply because of using the WordNet based vocabulary to identify the words).

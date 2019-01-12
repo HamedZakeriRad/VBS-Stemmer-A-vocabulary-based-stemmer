@@ -7,11 +7,11 @@
  */
 class PreFixStem {
     //-------------------
-    public $mySQLConnect;
-    //-------------------
+    private $ConnectDB;
     private $Word;
     //-------------------
-    public function PreFixCheck($Word) {
+    public function PreFixCheck($Word, $ConnectDB) {
+        $this->ConnectDB = $ConnectDB;
         $this->Word = $Word;
         $this->PreFixStems();
         return $this->Word;
@@ -24,7 +24,7 @@ class PreFixStem {
 
     //---------------------Database Control-------------------------------------
     private function CheckDictionary() {
-        $Result = $this->mySQLConnect->Select("SELECT word FROM vocabulary WHERE Word = '$this->Word' ;");
+        $Result = $this->ConnectDB->Select("SELECT word FROM vocabulary WHERE Word = '$this->Word' ;");
         return $Result;
     }
 

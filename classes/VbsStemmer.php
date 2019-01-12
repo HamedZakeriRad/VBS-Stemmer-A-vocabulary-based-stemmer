@@ -15,6 +15,7 @@ require_once 'PreFixStem.php';
 class VbsStemmer {
     //-------------------
     public $Word; //Word that should be Stemmed
+    public $DbType = "SQLite"; // Options: "SQLite" and "MySQL" 
     //-------------------
     private $OriginalWord;
     private $Exit;
@@ -23,31 +24,30 @@ class VbsStemmer {
     private $SpecialWords;
     private $ExceptionalWords;
     private $PreFixStem;
-    private $mySQLConnect;
+    private $ConnectDB;
+    
+    private $SqliteFileDB = "classes/Vocabulary.db";
     //-------------------
     function __construct() {
-        $this->mySQLConnect = new mySQLConnect(); 
-        
-
         $this->IrregularVerbs = new IrregularVerbs();
         $this->SpecialWords = new SpecialWords();
         $this->ExceptionalWords = new ExceptionalWords();
         $this->PreFixStem = new PreFixStem();
-        $this->PreFixStem->mySQLConnect = $this->mySQLConnect;
+        $this->ConnectDB = new mySQLConnect();
     }
 
     public function Stem() {
-        $this->mySQLConnect->PDOConnect(); 
+        $this->ConnectDB->PDOConnect($this->DbType, $this->SqliteFileDB);
         $this->OriginalWord = $this->Word;
         $this->StemCheck();
+        $this->ConnectDB->PDOConnectionClose();
         
-        $this->mySQLConnect->PDOConnectionClose();
         return $this->Word;
     }
 
     private function StemCheck() {
         if ($this->RunPreFix) {
-            $this->Word = $this->PreFixStem->PreFixCheck($this->Word);
+            $this->Word = $this->PreFixStem->PreFixCheck($this->Word, $this->ConnectDB);
         }
         $this->Word = $this->IrregularVerbs->IrregularVerbsCheck($this->Word);
         $this->Word = $this->SpecialWords->SpecialWordsCheck($this->Word);
@@ -1603,12 +1603,12 @@ class VbsStemmer {
 
     //---------------------Database Control-------------------------------------
     private function CheckDictionary() {
-        $Result = $this->mySQLConnect->Select("SELECT word FROM vocabulary WHERE word = '$this->Word' ;");
+        $Result = $this->ConnectDB->Select("SELECT word FROM vocabulary WHERE word = '$this->Word' ;");
+            if ((!$Result && (substr($this->Word, -1) == 's')) && strlen($this->Word) < 3) {
+                $this->Word = substr($this->Word, 0, -1);
+                $Result = $this->ConnectDB->Select("SELECT word FROM vocabulary WHERE word = '$this->Word' ;");
+            }
         
-        if ((!$Result && (substr($this->Word, -1) == 's')) && strlen($this->Word) < 3) {
-            $this->Word = substr($this->Word, 0, -1);
-            $Result = $this->mySQLConnect->Select("SELECT word FROM vocabulary WHERE word = '$this->Word' ;");
-        }
         return $Result;
     }
     //--------------------------------------------------------------------------

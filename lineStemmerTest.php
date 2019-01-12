@@ -4,6 +4,7 @@ ob_start();
 //-----------------------------------------------------------------------------
 require_once 'classes/VbsStemmer.php';
 $VbsStemmer = new VbsStemmer();
+//$VbsStemmer->$DbType = "MySQL";
 //-----------------------------------------------------------------------------
 $OriginalTextToBeStemmed = "the boundary layer in simple shear flow past a flat plate the boundary layer equations are presented for steady incompressible flow with no pressure gradient";
 $StemmedText = "";
