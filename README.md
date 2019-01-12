@@ -9,16 +9,16 @@ SQLite3 extention
 exec function 
 
 # Installation
-This Stemmer is written in PHP. The Vocabulary is based on WordNet 3. VBS Stemmer needs access to MySQL to extract the Words from the vocabulary.
+This Stemmer is written in PHP. The Vocabulary is based on WordNet 3. VBS Stemmer needs access to MySQL or SQLite to extract the Words from the vocabulary.
 
 SQLite:
 
 It is active by default, you don't need to do anything.
 
 MySQL: 
-1) Create a Database in MySQL and Restore the Vocabulary.sql file (in the MySQL File Folder) into the Database.
+1) Create a Database in MySQL and Restore the Vocabulary.sql file (from the MySQL File Folder) into the Database.
 2) Edit Config.php file located in the classes folder and change the MySQL access details based on your Database.
-3) Initialize $VbsStemmer->$DbType = "MySQL"; 
+3) Initialize $VbsStemmer->$DbType = "MySQL"; after creating the Object.
 
 
 # VBS-Stemmer
