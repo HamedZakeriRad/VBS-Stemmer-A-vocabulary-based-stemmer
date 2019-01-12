@@ -12,6 +12,7 @@ exec function
 This Stemmer is written in PHP. The Vocabulary is based on WordNet 3. VBS Stemmer needs access to MySQL to extract the Words from the vocabulary.
 
 SQLite:
+
 It is active by default, you don't need to do anything.
 
 MySQL: 
