@@ -1,9 +1,11 @@
 # VBS-Stemmer-A-vocabulary-based-stemmer
 VBS Stemmer: A vocabulary-based stemmer
 
-# Requirement
+# Requirements
 PHP > 7.0
+
 SQLite3 extention
+
 exec function
 
 # Installation
