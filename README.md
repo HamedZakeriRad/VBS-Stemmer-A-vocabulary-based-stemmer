@@ -29,10 +29,3 @@ The stemming algorithm built from two separate stemming processes:
 
 1)	The first process is based on the irregular verbs, exceptions and special words.
 2)	The second part of the stemming process is to stem the words in each suffix category, the words which are not part of the irregular verbs, exceptional words and special words list. These words can be correctly stemmed according to the stemming rules implemented in the stemming algorithm
- 
-# To learn more about VBS-Stemmer please refer to the published paper:
-
-https://www.sciencepubco.com/index.php/ijet/article/view/9192
-
-# How to Cite:
-Please reffer to the published paper for Citation.
